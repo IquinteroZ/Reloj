@@ -63,5 +63,68 @@
 
         /* Reloj digital */
         .reloj-digital {
-            text-align:
-        
+            text-align: center;
+        }
+
+        .hora-digital {
+            font-size: 3em;
+            text-shadow: 0 0 10px #0ff;
+        }
+
+        .fecha-digital {
+            font-size: 1.5em;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-reloj">
+        <!-- Reloj Analógico -->
+        <div class="reloj-analogico">
+            <div class="aguja hora" id="aguja-hora"></div>
+            <div class="aguja minuto" id="aguja-minuto"></div>
+            <div class="aguja segundo" id="aguja-segundo"></div>
+        </div>
+
+        <!-- Reloj Digital -->
+        <div class="reloj-digital">
+            <div class="hora-digital" id="hora-digital">--:--:--</div>
+            <div class="fecha-digital" id="fecha-digital">Cargando fecha...</div>
+        </div>
+    </div>
+
+    <script>
+        function actualizarReloj() {
+            const ahora = new Date();
+            const horas = ahora.getHours();
+            const minutos = ahora.getMinutes();
+            const segundos = ahora.getSeconds();
+
+            // Reloj digital
+            const horaTexto = ahora.toLocaleTimeString('es-ES');
+            const fechaTexto = ahora.toLocaleDateString('es-ES', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            document.getElementById("hora-digital").textContent = horaTexto;
+            document.getElementById("fecha-digital").textContent =
+                fechaTexto.charAt(0).toUpperCase() + fechaTexto.slice(1);
+
+            // Reloj analógico
+            const gradosHora = ((horas % 12) + minutos / 60) * 30;
+            const gradosMinuto = minutos * 6;
+            const gradosSegundo = segundos * 6;
+
+            document.getElementById("aguja-hora").style.transform = `rotate(${gradosHora}deg)`;
+            document.getElementById("aguja-minuto").style.transform = `rotate(${gradosMinuto}deg)`;
+            document.getElementById("aguja-segundo").style.transform = `rotate(${gradosSegundo}deg)`;
+        }
+
+        setInterval(actualizarReloj, 1000);
+        actualizarReloj();
+    </script>
+</body>
+</html>
